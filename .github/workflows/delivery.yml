@@ -89,7 +89,7 @@
           run: chef env --chef-license accept
           shell: powershell
         - name: Kitchen_Docker_Gem
-          run: chef gem install kitchen-docker --chef-license accept
+          run: chef gem install kitchen-docker
           shell: powershell
           env:
             KITCHEN_LOCAL_YAML: kitchen.windows.yml
