@@ -18,77 +18,86 @@
           env:
             CHEF_LICENSE: accept-no-persist
 
-    dokken:
-      needs: [delivery]
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          os:
-            - 'amazonlinux'
-            - 'amazonlinux-2'
-            # - 'debian-8'
-            - 'debian-9'
-            - 'debian-10'
-            - 'centos-6'
-            - 'centos-7'
-            - 'centos-8'
-            - 'oraclelinux-6'
-            - 'oraclelinux-7'
-            # - 'oraclelinux-8'
-            - 'fedora-latest'
-            - 'ubuntu-1604'
-            - 'ubuntu-1804'
-            - 'opensuse-leap-15'
-
-          suite:
-            - 'package'
-            - 'service'
-            - 'service-auth'
-            - 'sup'
-            - 'config'
-            - 'config-auth'
-            - 'user-toml'
-            - 'license'
-            - 'config-chef-13'
-            - 'config-chef-13-auth'
-        fail-fast: false
-
-      steps:
-        - name: Check out code
-          uses: actions/checkout@master
-        - name: Install Chef
-          uses: actionshub/chef-install@master
-        - name: Dokken
-          uses: actionshub/kitchen-dokken@master
-          env:
-            CHEF_LICENSE: accept-no-persist
-            KITCHEN_LOCAL_YAML: kitchen.dokken.yml
-          with:
-            suite: ${{ matrix.suite }}
-            os: ${{ matrix.os }}
-
-    # windows:
+    # dokken:
     #   needs: [delivery]
-    #   runs-on: windows-2019
+    #   runs-on: ubuntu-latest
     #   strategy:
     #     matrix:
     #       os:
-    #         - 'windows-2019'
+    #         - 'amazonlinux'
+    #         - 'amazonlinux-2'
+    #         # - 'debian-8'
+    #         - 'debian-9'
+    #         - 'debian-10'
+    #         - 'centos-6'
+    #         - 'centos-7'
+    #         - 'centos-8'
+    #         - 'oraclelinux-6'
+    #         - 'oraclelinux-7'
+    #         # - 'oraclelinux-8'
+    #         - 'fedora-latest'
+    #         - 'ubuntu-1604'
+    #         - 'ubuntu-1804'
+    #         - 'opensuse-leap-15'
+
     #       suite:
-    #         - 'example'
+    #         - 'package'
+    #         - 'service'
+    #         - 'service-auth'
+    #         - 'sup'
+    #         - 'config'
+    #         - 'config-auth'
+    #         - 'user-toml'
+    #         - 'license'
+    #         - 'config-chef-13'
+    #         - 'config-chef-13-auth'
     #     fail-fast: false
 
     #   steps:
     #     - name: Check out code
     #       uses: actions/checkout@master
-    #       This does not currently support windows and will need support added
     #     - name: Install Chef
     #       uses: actionshub/chef-install@master
-    #     - name: Kitchen
+    #     - name: Dokken
     #       uses: actionshub/kitchen-dokken@master
     #       env:
     #         CHEF_LICENSE: accept-no-persist
-    #         KITCHEN_LOCAL_YAML: kitchen.windows.yml
+    #         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
     #       with:
     #         suite: ${{ matrix.suite }}
     #         os: ${{ matrix.os }}
+
+    windows:
+      needs: [delivery]
+      runs-on: windows-2019
+      strategy:
+        matrix:
+          os:
+            - 'windows-2019'
+          suite:
+            - 'win-sup'
+        fail-fast: false
+      steps:
+        - name: Check out code
+          uses: actions/checkout@master
+        - run: . { iwr -useb https://omnitruck.chef.io/install.ps1 } | iex; install -channel stable -project chef-workstation
+          shell: powershell
+        - name: Chef_Env_Path
+          run: echo "##[add-path]C:\opscode\chef-workstation\bin\;"
+          shell: powershell
+        # - name: Build Chef Solo file
+        #   run: new-item -itemtype file solo.rb ; add-content -path solo.rb -value "cookbook_path 'test\fixtures\cookbooks\'`r`n"
+        #   shell: powershell
+        - name: Run kitchen list
+          # run: Start-Process -filepath c:\opscode\chef-workstation\bin\chef-solo.bat -argumentList @("test/fixtures/cookbooks/test/recipes/${{ matrix.suite }}.rb") -NoNewWindow
+          run: kitchen list
+          shell: powershell
+          env:
+            CHEF_LICENSE: accept-no-persist
+            KITCHEN_LOCAL_YAML: kitchen.windows.yml
+        - name: kitchen_test
+          run: kitchen test ${{ matrix.suite }}-${{ matrix.os }}
+          shell: powershell
+          env:
+            CHEF_LICENSE: accept-no-persist
+            KITCHEN_LOCAL_YAML: kitchen.windows.yml
