@@ -85,22 +85,21 @@
         - name: Chef_Env_Path
           run: echo "##[add-path]C:\opscode\chef-workstation\bin\;"
           shell: powershell
-        - name: Kitchen_Docker_Gem
-          run: chef gem install kitchen-docker
+        - name: CHEF_LICENSE
+          run: chef env --chef-license accept
           shell: powershell
-        # - name: Build Chef Solo file
-        #   run: new-item -itemtype file solo.rb ; add-content -path solo.rb -value "cookbook_path 'test\fixtures\cookbooks\'`r`n"
-        #   shell: powershell
+        - name: Kitchen_Docker_Gem
+          run: chef gem install kitchen-docker --chef-license accept
+          shell: powershell
+          env:
+            KITCHEN_LOCAL_YAML: kitchen.windows.yml
         - name: Run kitchen list
-          # run: Start-Process -filepath c:\opscode\chef-workstation\bin\chef-solo.bat -argumentList @("test/fixtures/cookbooks/test/recipes/${{ matrix.suite }}.rb") -NoNewWindow
           run: kitchen list
           shell: powershell
           env:
-            CHEF_LICENSE: accept-no-persist
             KITCHEN_LOCAL_YAML: kitchen.windows.yml
         - name: kitchen_test
           run: kitchen test ${{ matrix.suite }}-${{ matrix.os }}
           shell: powershell
           env:
-            CHEF_LICENSE: accept-no-persist
             KITCHEN_LOCAL_YAML: kitchen.windows.yml
