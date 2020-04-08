@@ -45,7 +45,7 @@ class Chef
       property :event_stream_site, String
       property :event_stream_url, String
       property :event_stream_token, String
-      property :event_strean_cert, String
+      property :event_stream_cert, String
 
       action :run do
         hab_install new_resource.name do
