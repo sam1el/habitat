@@ -85,6 +85,9 @@
         - name: Chef_Env_Path
           run: echo "##[add-path]C:\opscode\chef-workstation\bin\;"
           shell: powershell
+        - name: Kitchen_Docker_Gem
+          run: chef gen install kitchen-docker
+          shell: powershell
         # - name: Build Chef Solo file
         #   run: new-item -itemtype file solo.rb ; add-content -path solo.rb -value "cookbook_path 'test\fixtures\cookbooks\'`r`n"
         #   shell: powershell
