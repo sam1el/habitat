@@ -82,6 +82,12 @@
           uses: actions/checkout@master
         - run: . { iwr -useb https://omnitruck.chef.io/install.ps1 } | iex; install -channel stable -project chef-workstation
           shell: powershell
+        - name: Chef_Env_Path
+          run: echo "##[add-path]C:\opscode\chef-workstation\bin\;"
+          shell: powershell
+        - name: CHEF_LICENSE
+          run: chef env --chef-license accept
+          shell: powershell
         - name: Dokken
           uses: actionshub/kitchen-dokken@master
           env:

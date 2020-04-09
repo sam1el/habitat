@@ -1,20 +1,19 @@
 ---
 driver:
-  name: docker
-  privileged: true # because Docker and SystemD/Upstart
+  name: dokken
   chef_license: accept-no-persist
 
 transport:
-  name: docker
+  name: dokken
 
-# provisioner:
-#   name: docker
-#   deprecations_as_errors: true
+provisioner:
+  name: dokken
+  deprecations_as_errors: true
 
-# verifier:
-#   name: serverspec
+verifier:
+  name: inspec
+
 platforms:
 - name: windows-2019
-  driver_config:
+  driver:
     image: microsoft/windowsservercore
-    platform: windows
