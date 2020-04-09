@@ -89,17 +89,11 @@
           run: chef env --chef-license accept
           shell: powershell
         - name: Kitchen_Docker_Gem
-          run: chef gem install kitchen-docker
+          run: chef gem install kitchen-docker; mv kitchen.yml kitchen.bad; mv kitchen.windows.yml kitchen.yml
           shell: powershell
-          env:
-            KITCHEN_LOCAL_YAML: kitchen.windows.yml
         - name: Run kitchen list
           run: kitchen list
           shell: powershell
-          env:
-            KITCHEN_LOCAL_YAML: kitchen.windows.yml
         - name: kitchen_test
           run: kitchen test ${{ matrix.suite }}-${{ matrix.os }}
           shell: powershell
-          env:
-            KITCHEN_LOCAL_YAML: kitchen.windows.yml
