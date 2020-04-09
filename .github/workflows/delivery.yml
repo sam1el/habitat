@@ -88,6 +88,9 @@
         - name: CHEF_LICENSE
           run: chef env --chef-license accept
           shell: powershell
+        - name: Docker_Opts
+          run: $env:DOCKER_HOST="tcp://localhost:2375"
+          shell: powershell
         - name: Dokken
           uses: actionshub/kitchen-dokken@master
           env:
