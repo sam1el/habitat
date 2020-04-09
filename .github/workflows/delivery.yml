@@ -67,6 +67,7 @@
     #         suite: ${{ matrix.suite }}
     #         os: ${{ matrix.os }}
 
+
     windows:
       needs: [delivery]
       runs-on: windows-2019
@@ -75,30 +76,66 @@
           os:
             - 'windows-2019'
           suite:
-            - 'win-sup'
+            - 'win_config_auth'
+            - 'win_config'
+            - 'win_license'
+            - 'win_package'
+            - 'win_service'
+            - 'win_sup'
+            - 'win_user_toml'
         fail-fast: false
       steps:
         - name: Check out code
           uses: actions/checkout@master
-        - run: . { iwr -useb https://omnitruck.chef.io/install.ps1 } | iex; install -channel stable -project chef-workstation
+        - name: Install Chef Workstation
+          run: . { iwr -useb https://omnitruck.chef.io/install.ps1 } | iex; install -channel stable -project chef-workstation
           shell: powershell
-        - name: Chef_Env_Path
+        - name: Add Chef Workstation to PATH
           run: echo "##[add-path]C:\opscode\chef-workstation\bin\;"
           shell: powershell
         - name: CHEF_LICENSE
           run: chef env --chef-license accept
           shell: powershell
-        - name: Docker_Opts
-          run: $env:DOCKER_HOST="tcp://localhost:2375"
+        - name: Chef Infra Client Run
+          run: chef-solo -c test/solo.rb -o "test::${{ matrix.suite }}"
           shell: powershell
-        - name: Dokken
-          uses: actionshub/kitchen-dokken@master
-          env:
-            CHEF_LICENSE: accept-no-persist
-            KITCHEN_LOCAL_YAML: kitchen.windows.yml
-          with:
-            suite: ${{ matrix.suite }}
-            os: ${{ matrix.os }}
+        - name: Integration Testing
+          run: inspec exec test\integration\${{ matrix.suite }}\default_spec.rb
+          shell: powershell
+
+
+    # windows:
+    #   needs: [delivery]
+    #   runs-on: windows-2019
+    #   strategy:
+    #     matrix:
+    #       os:
+    #         - 'windows-2019'
+    #       suite:
+    #         - 'win-sup'
+    #     fail-fast: false
+    #   steps:
+    #     - name: Check out code
+    #       uses: actions/checkout@master
+    #     - run: . { iwr -useb https://omnitruck.chef.io/install.ps1 } | iex; install -channel stable -project chef-workstation
+    #       shell: powershell
+    #     - name: Chef_Env_Path
+    #       run: echo "##[add-path]C:\opscode\chef-workstation\bin\;"
+    #       shell: powershell
+    #     - name: CHEF_LICENSE
+    #       run: chef env --chef-license accept
+    #       shell: powershell
+    #     - name: Docker_Opts
+    #       run: $env:DOCKER_HOST="tcp://localhost:2375"
+    #       shell: powershell
+    #     - name: Dokken
+    #       uses: actionshub/kitchen-dokken@master
+    #       env:
+    #         CHEF_LICENSE: accept-no-persist
+    #         KITCHEN_LOCAL_YAML: kitchen.windows.yml
+    #       with:
+    #         suite: ${{ matrix.suite }}
+    #         os: ${{ matrix.os }}
         # - name: Kitchen_File1
         #   run: mv kitchen.yml kitchen.old.yml
         #   shell: powershell
