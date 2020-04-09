@@ -88,8 +88,14 @@
         - name: CHEF_LICENSE
           run: chef env --chef-license accept
           shell: powershell
+        - name: Kitchen_File1
+          run: mv kitchen.yml kitchen.old.yml
+          shell: powershell
+        - name: Kitchen_File1
+          run: mv kitchen.windows.yml kitchen.yml
+          shell: powershell
         - name: Kitchen_Docker_Gem
-          run: chef gem install kitchen-docker; mv kitchen.yml kitchen.bad; mv kitchen.windows.yml kitchen.yml
+          run: chef gem install kitchen-docker ; mv kitchen.yml kitchen.bad ; mv kitchen.windows.yml kitchen.yml
           shell: powershell
         - name: Run kitchen list
           run: kitchen list
