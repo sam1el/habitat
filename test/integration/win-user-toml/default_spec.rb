@@ -2,12 +2,12 @@ describe file('C:\habitat\hab.exe') do
   it { should exist }
 end
 
-splunkforwarder_content = <<-EOF
-[directories]
-path = ["C:/hab/pkgs/.../*.log"]
-EOF
+# splunkforwarder_content = <<-EOF
+# [directories]
+# path = ["C:/hab/pkgs/.../*.log"]
+# EOF
 
-describe file('/hab/user/splunkforwarder/config/user.toml') do
+describe file('c:\hab\user\splunkforwarder\config\user.toml') do
   it { should exist }
-  its('content') { should match(splunkforwarder_content.gsub!(/\n/, "\r\n")) }
+  its('content') { should match '[directories]\npath = ["C:/hab/pkgs/.../*.log"]' }
 end
