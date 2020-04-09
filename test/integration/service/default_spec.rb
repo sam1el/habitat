@@ -67,3 +67,11 @@ describe file('/hab/sup/default/specs/sensu-backend.spec') do
   it { should exist }
   its(:content) { should match(/^desired_state = "up"$/) }
 end
+
+
+splunkserviceapi = 'curl -v -H "Authorization: Bearer secret" http://localhost:9631/services/nginx/default | jq .cfg'
+describe json({ command: splunkserviceapi }) do
+  its(['http','keepalive_timeout']) { should eq 120 }
+  its(['http', 'listen', 'port']) { should eq 80}
+  its(['worker_processes']) {should eq 2}
+end
