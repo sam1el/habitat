@@ -9,5 +9,5 @@ end
 
 describe file('c:\hab\user\splunkforwarder\config\user.toml') do
   it { should exist }
-  its('content') { should match '[directories]\npath = ["C:/hab/pkgs/.../*.log"]' }
+  its('content') { should match '[directories]\r\npath = ["C:/hab/pkgs/.../*.log"]' }
 end

@@ -7,22 +7,22 @@ end
 #   it { should be_running }
 # end
 
-restart_script = <<-EOH
-restart-service habitat
-EOH
+# restart_script = <<-EOH
+# restart-service habitat
+# EOH
 
-describe powershell(restart_script) do
-  its(:exit_status) { should eq(0) }
-end
+# describe powershell(restart_script) do
+#   its(:exit_status) { should eq(0) }
+# end
 
 # describe service('Habitat') do
 #   it { should be_running }
 # end
 
-describe port(9999) do
+describe port('127.0.0.1', 9999) do
   it { should be_listening }
 end
 
-describe port(9998) do
+describe port('127.0.0.1', 9998) do
   it { should be_listening }
 end

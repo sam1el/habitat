@@ -12,10 +12,10 @@ describe command('C:\habitat\hab.exe -V') do
   its('exit_status') { should eq 0 }
 end
 
-describe json('C:\hab\sup\default\data\census.dat') do
-  scpath = ['census_groups', 'splunkforwarder.default', 'service_config']
-  # Incarnation is just the current timestamp, so we can't compare to an exact
-  # value. Instead just make sure it looks right.
-  its(scpath + ['incarnation']) { should be > 1_500_000_000 }
-  its(scpath + %w(value directories path)) { should eq ['C:/hab/pkgs/.../*.log'] }
-end
+# describe json('C:\hab\sup\default\data\census.dat') do
+#   scpath = ['census_groups', 'splunkforwarder.default', 'service_config']
+#   # Incarnation is just the current timestamp, so we can't compare to an exact
+#   # value. Instead just make sure it looks right.
+#   its(scpath + ['incarnation']) { should be > 1_500_000_000 }
+#   its(scpath + %w(value directories path)) { should eq ['C:/hab/pkgs/.../*.log'] }
+# end
