@@ -1,6 +1,5 @@
 hab_sup 'default' do
   license 'accept'
-  gateway_auth_token 'secret'
 end
 
 ruby_block 'wait-for-sup-default-startup' do
@@ -11,10 +10,6 @@ ruby_block 'wait-for-sup-default-startup' do
   retry_delay 1
 end
 
-hab_service 'skylerto/splunkforwarder' do
-  gateway_auth_token 'secret'
-end
-
 hab_user_toml 'splunkforwarder' do
   config(
     directories: {
@@ -23,5 +18,6 @@ hab_user_toml 'splunkforwarder' do
       ],
     }
   )
-  gateway_auth_token 'secret'
 end
+
+hab_service 'skylerto/splunkforwarder'
