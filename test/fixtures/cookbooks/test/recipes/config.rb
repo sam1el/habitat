@@ -17,10 +17,6 @@ hab_package 'core/jq-static' do
   binlink true
 end
 
-hab_service 'core/nginx' do
-  gateway_auth_token 'secret'
-end
-
 # we need to sleep to let the nginx service have enough time to
 # startup properly before we can configure it.
 # This is here due to https://github.com/habitat-sh/habitat/issues/3155 and
@@ -40,6 +36,10 @@ hab_config 'nginx.default' do
       keepalive_timeout: 120,
     }
   )
+  gateway_auth_token 'secret'
+end
+
+hab_service 'core/nginx' do
   gateway_auth_token 'secret'
 end
 

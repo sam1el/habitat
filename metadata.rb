@@ -12,6 +12,4 @@ version           '1.7.0'
   supports os
 end
 
-depends 'line'
-
 gem 'toml-rb'
