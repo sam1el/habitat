@@ -2,12 +2,15 @@ describe file('C:\habitat\hab.exe') do
   it { should exist }
 end
 
-splunkforwarder_content = <<-EOF
-[directories]
-path = ["C:/hab/pkgs/.../*.log"]
-EOF
+servicecheck = <<-EOH
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.Add("Content-Type", "application/json")
+$headers.Add("Authorization", "Bearer secret")
+$uri = "http://localhost:9631/services/splunkforwarder/default"
+$reply = (Invoke-RestMethod -Headers $headers -uri $uri).cfg | Convertto-Json
+$reply
+EOH
 
-describe file('C:\hab\user\splunkforwarder\config\user.toml') do
-  it { should exist }
-  its('content') { should match(splunkforwarder_content) }
+describe json(command: servicecheck) do
+  its(%w(directories path)) { should eq ['C:/hab/pkgs/.../*.log'] }
 end

@@ -58,22 +58,21 @@ class Chef
           not_if { ::Win32::Service.exists?('Habitat') }
         end
 
-
-        # template 'C:/hab/svc/windows-service/HabService.dll.config' do
-        #   source 'windows/HabService.dll.config.erb'
-        #   cookbook 'habitat'
-        #   variables exec_start_options: exec_start_options,
-        #             bldr_url: new_resource.bldr_url,
-        #             auth_token: new_resource.auth_token,
-        #             gateway_auth_token: new_resource.gateway_auth_token
-        #   action :create
-        # end
+        template 'C:/hab/svc/windows-service/HabService.dll.config' do
+          source 'windows/HabService.dll.config.erb'
+          cookbook 'habitat'
+          variables exec_start_options: exec_start_options,
+                    bldr_url: new_resource.bldr_url,
+                    auth_token: new_resource.auth_token,
+                    gateway_auth_token: new_resource.gateway_auth_token
+          action :create
+        end
 
         service 'Habitat' do
           subscribes :restart, 'env[HAB_AUTH_TOKEN]'
           subscribes :restart, 'env[HAB_SUP_GATEWAY_AUTH_TOKEN]'
           subscribes :restart, 'env[HAB_BLDR_URL]'
-          # subscribes :restart, 'template[C:/hab/svc/windows-service/HabService.dll.config]'
+          subscribes :restart, 'template[C:/hab/svc/windows-service/HabService.dll.config]'
           subscribes :restart, 'hab_package[core/hab-sup]'
           subscribes :restart, 'hab_package[core/hab-launcher]'
           action [:enable, :start]

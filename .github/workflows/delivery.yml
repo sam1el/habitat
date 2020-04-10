@@ -42,10 +42,8 @@
           suite:
             - 'package'
             - 'service'
-            - 'service-auth'
             - 'sup'
             - 'config'
-            - 'config-auth'
             - 'user-toml'
             - 'license'
             - 'config-chef-13'

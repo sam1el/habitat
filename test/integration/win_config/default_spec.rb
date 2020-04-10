@@ -13,8 +13,8 @@ describe command('C:\habitat\hab.exe -V') do
 end
 
 splunkserviceapi = '(Invoke-RestMethod http://localhost:9631/services/splunkforwarder/default).cfg | ConvertTo-Json'
-describe json({ command: splunkserviceapi }) do
-  its(['directories','path']) { should eq ['C:/hab/pkgs/.../*.log'] }
+describe json(command: splunkserviceapi) do
+  its(%w(directories path)) { should eq ['C:/hab/pkgs/.../*.log'] }
 end
 
 # This test needs to be re-written to hit the supervisor API

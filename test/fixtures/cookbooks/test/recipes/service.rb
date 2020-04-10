@@ -89,7 +89,6 @@ hab_service 'core/redis stop' do
   gateway_auth_token 'secret'
   service_name 'core/redis'
   action :stop
-  gateway_auth_token 'secret'
 end
 
 ruby_block 'wait-for-redis-stopped' do
@@ -174,7 +173,7 @@ hab_service 'core/grafana property change from custom values' do
   bldr_url 'https://bldr-test.habitat.sh'
   channel 'bldr-1321420393699319808'
   topology :standalone
-  strategy :'at-once'
+  strategy 'at-once'
   update_condition 'latest'
   binding_mode :relaxed
   shutdown_timeout 10
@@ -204,7 +203,7 @@ hab_service 'core/grafana binding' do
   bldr_url 'https://bldr-test.habitat.sh'
   channel 'bldr-1321420393699319808'
   topology :standalone
-  strategy :'at-once'
+  strategy 'at-once'
   update_condition 'latest'
   bind 'prom:prometheus.default'
   binding_mode :relaxed
