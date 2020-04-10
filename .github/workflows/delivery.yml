@@ -47,7 +47,6 @@
             - 'user-toml'
             - 'license'
             - 'config-chef-13'
-            - 'config-chef-13-auth'
         fail-fast: false
 
       steps:
@@ -72,7 +71,6 @@
           os:
             - 'windows-2019'
           suite:
-            - 'win_config_auth'
             - 'win_config'
             - 'win_license'
             - 'win_package'
