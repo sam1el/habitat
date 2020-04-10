@@ -42,11 +42,12 @@ describe 'test::service' do
         bldr_url: 'https://bldr-test.habitat.sh',
         channel: :'bldr-1321420393699319808',
         topology: :standalone,
-        strategy: :'at-once',
+        strategy: 'at-once',
         update_condition: 'latest',
         binding_mode: :relaxed,
         shutdown_timeout: 10,
-        health_check_interval: 32
+        health_check_interval: 32,
+        gateway_auth_token: 'secret'
       )
     end
 
