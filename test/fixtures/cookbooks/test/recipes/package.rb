@@ -35,3 +35,8 @@ hab_package 'binlink_force' do
   version '1.15.6/20181212185120'
   binlink :force
 end
+
+hab_package 'core/nginx' do
+  keep_latest '1'
+  action :remove
+end

@@ -255,7 +255,7 @@ All `event_stream_*` properties are optional, and allow the Habitat Supervisor t
 - `event_stream_site`: Application Dashboard label for the "site" of the application - can be filtered in the dashboard
 - `event_stream_url`: `AUTOMATE_HOSTNAME:4222` - the Chef Automate URL with port 4222 specified (can be changed if needed)
 - `event_stream_token`: Chef Automate token for sending application event stream data
-- `event_stream__certificate`: With `Intermediary Certificates` or, Automate 2 being set to use TLS with a valid cert, you will need to provide `Habitat` with your certificate for communication with Automate to work. [Follow these steps!](https://automate.chef.io/docs/applications-setup/#share-the-tls-certificate-with-chef-habitat)
+- `event_stream_certificate`: With `Intermediary Certificates` or, Automate 2 being set to use TLS with a valid cert, you will need to provide `Habitat` with your certificate for communication with Automate to work. [Follow these steps!](https://automate.chef.io/docs/applications-setup/#share-the-tls-certificate-with-chef-habitat)
 
 #### Examples
 
