@@ -7,7 +7,6 @@ end
 
 hab_sup 'tester' do
   bldr_url 'https://willem.habitat.sh'
-  hab_version '1.5.71'
   launcher_version '13458'
   license 'accept'
 end
