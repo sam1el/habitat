@@ -49,6 +49,7 @@ class Chef
       property :sup_version, String
       property :launcher_version, String
       property :service_version, String
+      property :keep_latest, String
 
       action :run do
         hab_install new_resource.name do
@@ -88,6 +89,7 @@ class Chef
           opts << "--event-stream-url #{new_resource.event_stream_url}" if new_resource.event_stream_url
           opts << "--event-stream-token #{new_resource.event_stream_token}" if new_resource.event_stream_token
           opts << "--event-stream-server-certificate #{new_resource.event_stream_cert}" if new_resource.event_stream_cert
+          opts << "--keep-latest-packages #{new_resource.keep_latest}" if new_resource.keep_latest
           opts.join(' ')
         end
       end

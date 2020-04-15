@@ -37,6 +37,5 @@ hab_package 'binlink_force' do
 end
 
 hab_package 'core/nginx' do
-  keep_latest '1'
   action :remove
 end
