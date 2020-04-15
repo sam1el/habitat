@@ -173,7 +173,7 @@ hab_service 'core/grafana property change from custom values' do
   bldr_url 'https://bldr-test.habitat.sh'
   channel 'bldr-1321420393699319808'
   topology :standalone
-  strategy :at_once
+  strategy :'at-once'
   update_condition 'latest'
   binding_mode :relaxed
   shutdown_timeout 10

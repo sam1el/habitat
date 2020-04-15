@@ -21,7 +21,7 @@ property :loaded, [true, false], default: false
 property :running, [true, false], default: false
 
 # hab svc options which get included based on the action of the resource
-property :strategy, [Symbol, String], equal_to: [:none, 'none', :atonce, 'at-once', :rolling, 'rolling'], default: :none, coerce: proc { |s| s.is_a?(String) ? s.to_sym : s }
+property :strategy, [Symbol, String], equal_to: [:none, 'none', :'at-once', 'at-once', :rolling, 'rolling'], default: :none, coerce: proc { |s| s.is_a?(String) ? s.to_sym : s }
 property :topology, [Symbol, String], equal_to: [:standalone, 'standalone', :leader, 'leader'], default: :standalone, coerce: proc { |s| s.is_a?(String) ? s.to_sym : s }
 property :bldr_url, String, default: 'https://bldr.habitat.sh'
 property :channel, [Symbol, String], default: :stable, coerce: proc { |s| s.is_a?(String) ? s.to_sym : s }
