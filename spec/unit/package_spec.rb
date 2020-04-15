@@ -44,7 +44,6 @@ describe 'test::package' do
 
     it 'removes core/nginx with remove action' do
       expect(chef_run).to remove_hab_package('core/nginx')
-        .wutg(action: :remove)
     end
   end
 end
