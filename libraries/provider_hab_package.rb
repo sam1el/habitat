@@ -177,9 +177,9 @@ class Chef
         nv_parts = new_version.squeeze('/').split('/')
 
         if nv_parts.count < 2
-          return current_version.squeeze('/').split('/')[0] == new_version.squeeze('/')
+          current_version.squeeze('/').split('/')[0] == new_version.squeeze('/')
         else
-          return current_version.squeeze('/') == new_resource.version.squeeze('/')
+          current_version.squeeze('/') == new_resource.version.squeeze('/')
         end
       end
 

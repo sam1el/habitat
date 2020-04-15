@@ -46,20 +46,24 @@ class Chef
       property :event_stream_url, String
       property :event_stream_token, String
       property :event_stream_cert, String
+      property :sup_version, String
+      property :launcher_version, String
+      property :service_version, String
 
       action :run do
         hab_install new_resource.name do
           license new_resource.license
+          hab_version new_resource.sup_version if new_resource.sup_version
         end
 
         hab_package 'core/hab-sup' do
           bldr_url new_resource.bldr_url if new_resource.bldr_url
-          version hab_version
+          version new_resource.sup_version if new_resource.sup_version
         end
 
         hab_package 'core/hab-launcher' do
           bldr_url new_resource.bldr_url if new_resource.bldr_url
-          version hab_launcher_version
+          version new_resource.launcher_version if new_resource.launcher_version
         end
       end
 

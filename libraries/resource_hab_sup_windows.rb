@@ -51,7 +51,7 @@ class Chef
 
         hab_package 'core/windows-service' do
           bldr_url new_resource.bldr_url if new_resource.bldr_url
-          version hab_windows_service_version
+          version new_resource.service_version if new_resource.service_version
         end
 
         execute 'hab pkg exec core/windows-service install' do
