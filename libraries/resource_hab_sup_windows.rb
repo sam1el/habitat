@@ -28,6 +28,7 @@ class Chef
 
       service_file = 'windows/HabService.dll.config.erb'
       win_service_config = 'C:/hab/svc/windows-service/HabService.dll.config'
+      win_launcher = `hab pkg list core/hablauncher`.split().last
 
       action :run do
         super()
@@ -61,13 +62,22 @@ class Chef
           not_if { ::Win32::Service.exists?('Habitat') }
         end
 
+        execute 'service config' do
+          command "$HabSvcConfig = c:\\hab\\svc\\windows-service\\HabService.dll.config
+          [xml]$xmlDoc = Get-Content $HabSvcConfig
+          $obj = $xmlDoc.configuration.appSettings.add | where {$_.Key -eq launcherArgs }
+          $obj.value = --no-color#{supervisor_options}
+          $xmlDoc.Save($HabSvcConfig)"
+        end
+
         template win_service_config.to_s do
           source service_file.to_s
           cookbook 'habitat'
           variables exec_start_options: exec_start_options,
                     bldr_url: new_resource.bldr_url,
                     auth_token: new_resource.auth_token,
-                    gateway_auth_token: new_resource.gateway_auth_token
+                    gateway_auth_token: new_resource.gateway_auth_token,
+                    launcher_version: win_launcher.to_s
           action :create
         end
 
