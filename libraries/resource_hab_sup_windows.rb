@@ -65,14 +65,6 @@ class Chef
           not_if { ::Win32::Service.exists?('Habitat') }
         end
 
-        execute 'service config' do
-          command "$HabSvcConfig = c:\\hab\\svc\\windows-service\\HabService.dll.config
-          [xml]$xmlDoc = Get-Content $HabSvcConfig
-          $obj = $xmlDoc.configuration.appSettings.add | where {$_.Key -eq launcherArgs }
-          $obj.value = --no-color#{supervisor_options}
-          $xmlDoc.Save($HabSvcConfig)"
-        end
-
         template win_service_config.to_s do
           source service_file.to_s
           cookbook 'habitat'
