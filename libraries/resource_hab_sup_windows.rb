@@ -28,7 +28,10 @@ class Chef
 
       service_file = 'windows/HabService.dll.config.erb'
       win_service_config = 'C:/hab/svc/windows-service/HabService.dll.config'
-      win_launcher = `hab pkg list core/hablauncher`.split().last
+
+      def win_launcher
+        `hab pkg list core/hablauncher`.split().last
+      end
 
       action :run do
         super()
