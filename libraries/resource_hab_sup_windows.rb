@@ -80,7 +80,7 @@ class Chef
                     bldr_url: new_resource.bldr_url,
                     auth_token: new_resource.auth_token,
                     gateway_auth_token: new_resource.gateway_auth_token,
-                    launcher_version: win_launcher.to_s
+                    launcher_version: win_launcher
           action :create
         end
 
