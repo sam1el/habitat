@@ -30,7 +30,8 @@ class Chef
       win_service_config = 'C:/hab/svc/windows-service/HabService.dll.config'
 
       def win_launcher
-        `hab pkg list core/hablauncher`.split().last
+        opts = %w(pkg list core/hablauncher)
+        hab(opts).split().last
       end
 
       action :run do
