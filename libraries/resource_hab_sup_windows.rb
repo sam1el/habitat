@@ -81,16 +81,13 @@ class Chef
                       win_launcher: win_version
             action :create
           end
-
-          service 'habitat' do
-            subscribes :restart, "template[#{win_service_config}]"
-          end
         end
 
         service 'Habitat' do
           subscribes :restart, 'env[HAB_AUTH_TOKEN]'
           subscribes :restart, 'env[HAB_SUP_GATEWAY_AUTH_TOKEN]'
           subscribes :restart, 'env[HAB_BLDR_URL]'
+          subscribes :restart, "template[#{win_service_config}]"
           subscribes :restart, 'hab_package[core/hab-sup]'
           subscribes :restart, 'hab_package[core/hab-launcher]'
           action [:enable, :start]
