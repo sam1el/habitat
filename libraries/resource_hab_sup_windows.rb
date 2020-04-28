@@ -17,6 +17,7 @@
 
 require 'win32/service' if RUBY_PLATFORM =~ /mswin|mingw32|windows/
 require_relative 'resource_hab_sup'
+
 include Habitat::Shared
 
 class Chef
@@ -29,13 +30,7 @@ class Chef
 
       service_file = 'windows/HabService.dll.config.erb'
       win_service_config = 'C:/hab/svc/windows-service/HabService.dll.config'
-
-      def win_launcher
-        if platform_family?('windows')
-          opts = %w(pkg list core/hab-launcher)
-          hab(opts).split().last
-        end
-      end
+      get_version = `hab pkg list core/hab-launcher`.split().last
 
       action :run do
         super()
@@ -76,7 +71,7 @@ class Chef
                     bldr_url: new_resource.bldr_url,
                     auth_token: new_resource.auth_token,
                     gateway_auth_token: new_resource.gateway_auth_token,
-                    launcher_version: win_launcher
+                    win_launcher: get_version
           action :create
         end
 
