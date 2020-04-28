@@ -29,10 +29,6 @@ class Chef
       service_file = 'windows/HabService.dll.config.erb'
       win_service_config = 'C:/hab/svc/windows-service/HabService.dll.config'
 
-      def win_version
-        `hab pkg list core/hab-launcher`.split().last
-      end
-
       action :run do
         super()
 
@@ -65,22 +61,36 @@ class Chef
           not_if { ::Win32::Service.exists?('Habitat') }
         end
 
-        template win_service_config.to_s do
-          source service_file.to_s
-          cookbook 'habitat'
-          variables exec_start_options: exec_start_options,
-                    bldr_url: new_resource.bldr_url,
-                    auth_token: new_resource.auth_token,
-                    gateway_auth_token: new_resource.gateway_auth_token,
-                    win_launcher: win_version
-          action :create
+        if ::File.exist?('C:/habitat/hab.exe')
+          win_version = `hab pkg list core/hab-launcher`.split().last
+
+          # ruby_block 'name' do
+          #   block do
+          #     win_version = `hab pkg list core/hab-launcher`.split().last
+          #     node.run_state['version'] = win_version
+          #   end
+          # end
+
+          template win_service_config.to_s do
+            source service_file.to_s
+            cookbook 'habitat'
+            variables exec_start_options: exec_start_options,
+                      bldr_url: new_resource.bldr_url,
+                      auth_token: new_resource.auth_token,
+                      gateway_auth_token: new_resource.gateway_auth_token,
+                      win_launcher: win_version
+            action :create
+          end
+
+          service 'habitat' do
+            subscribes :restart, "template[#{win_service_config}]"
+          end
         end
 
         service 'Habitat' do
           subscribes :restart, 'env[HAB_AUTH_TOKEN]'
           subscribes :restart, 'env[HAB_SUP_GATEWAY_AUTH_TOKEN]'
           subscribes :restart, 'env[HAB_BLDR_URL]'
-          subscribes :restart, "template[#{win_service_config}]"
           subscribes :restart, 'hab_package[core/hab-sup]'
           subscribes :restart, 'hab_package[core/hab-launcher]'
           action [:enable, :start]
